@@ -1,0 +1,125 @@
+html {
+  height: 100%;
+  width: 100%;
+}body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
+  color: #333;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align to top for longer content */
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.app-container {
+  background-color: #ffffff;
+  padding: 25px 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+}
+
+h1 {
+  color: #000000;
+  margin-bottom: 25px;
+  font-size: 1.8em;
+}
+
+.question-container, .result-container {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  display: none; /* Hidden by default */
+}
+
+.question-container.active {
+  display: block; /* Show active question */
+}
+
+.question-container p {
+  font-size: 1.1em;
+  margin-bottom: 15px;
+  color: grey;
+}
+
+button {
+  background-color: #000000;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:active {
+  background-color: #004085;
+  transform: scale(0.98); /* Visual feedback for click */
+}
+
+#result-container {
+  display: none; /* Hidden by default */
+  background-color: #e6ffed; /* Light green for result */
+  border-color: #8293;
+}
+
+#result-container h2 {
+  color: #00796b; /* Teal color */
+  margin-top: 0;
+}
+
+#result-text {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #237192; /* Darker green */
+  margin-bottom: 20px;
+}
+
+#restart-button {
+  background-color: #11111; /* Grey color */
+}
+
+#restart-button:hover {
+  background-color: #231105;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .app-container {
+      margin: 10px;
+      padding: 20px;
+  }
+
+  h1 {
+      font-size: 1.6em;
+  }
+
+  .question-container p {
+      font-size: 1em;
+  }
+
+  button {
+      padding: 10px 15px;
+      font-size: 0.9em;
+      width: calc(50% - 10px); /* Two buttons per row with margin */
+  }
+
+  /* For questions with only two options, ensure they take full width if desired */
+  .question-container button:nth-child(odd):last-child,
+  .question-container button:nth-child(even):last-child {
+       /* width: auto; */ /* Uncomment if you want single buttons to be auto width */
+  }
+}
