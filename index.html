@@ -1,52 +1,50 @@
-</html><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study Helper App</title>
+    <title>Mood Playlist Finder</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="app-container">
-        <h1>Study Method Decider</h1>
 
-        <div id="q1-subject" class="question-container active">
-            <p>Is the subject you’re studying <strong>theoretical</strong> or <strong>analytical</strong>?</p>
-            <button data-question="subject" data-value="theoretical">Theoretical</button>
-            <button data-question="subject" data-value="analytical">Analytical</button>
-        </div>
+    <!-- Welcome Screen (Shows First) -->
+    <div id="welcome-screen">
+        <h1>Welcome!</h1>
+        <p>How is your day going?</p>
+        <button class="enter-btn">Good</button>
+        <button class="enter-btn">Not bad</button>
+        <button class="enter-btn">Bad</button>
+    </div>
 
-        <div id="q2-difficulty" class="question-container">
-            <p>Is the subject <strong>easy</strong> or <strong>hard</strong> for you?</p>
-            <button data-question="difficulty" data-value="easy">Easy</button>
-            <button data-question="difficulty" data-value="hard">Hard</button>
-        </div>
+    <!-- Main App Content (Initially Hidden) -->
+    <div id="main-app" class="hidden">
+        <div class="container">
+            <!-- Start -->
+            <header>
+                <h1>How are you feeling today?</h1>
+                <p>Select a mood to get a personalized playlist.</p>
+            </header>
 
-        <div id="q3-preference" class="question-container">
-            <p>Do you prefer <strong>solo</strong> or <strong>group</strong> study?</p>
-            <button data-question="preference" data-value="solo">Solo</button>
-            <button data-question="preference" data-value="group">Group</button>
-        </div>
+            <!-- Display mood options (buttons) -->
+            <div class="mood-buttons">
+                <button class="mood-btn" data-mood="happy">😊 Happy</button>
+                <button class="mood-btn" data-mood="sad">😢 Sad</button>
+                <button class="mood-btn" data-mood="love">❤️ Love</button>
+                <button class="mood-btn" data-mood="stress">🧘 Stress</button>
+                <button class="mood-btn" data-mood="hype">🔥 Hype</button>
+            </div>
 
-        <div id="q4-time" class="question-container">
-            <p>Do you have more than 2 hours to study?</p>
-            <button data-question="time" data-value="yes">Yes (>2 hours)</button>
-            <button data-question="time" data-value="no">No (≤2 hours)</button>
-        </div>
-
-        <div id="q5-learner" class="question-container">
-            <p>Are you a <strong>visual learner</strong>?</p>
-            <button data-question="learner" data-value="yes">Yes</button>
-            <button data-question="learner" data-value="no">No</button>
-        </div>
-
-        <div id="result-container" class="result-container">
-            <h2>Recommended Study Method:</h2>
-            <p id="result-text"></p>
-            <button id="restart-button">Start Over</button>
+            <!-- Container for Spotify Embed or Error Message -->
+            <div id="playlist-container">
+                <p class="initial-message">Your playlist will appear here...</p>
+            </div>
+            <p id="error-message" class="hidden">Please select a valid mood.</p>
+            <!-- End -->
         </div>
     </div>
 
     <script src="script.js"></script>
 </body>
 </html>
+
