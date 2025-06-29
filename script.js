@@ -1,111 +1,67 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const questions = {
-      subject: document.getElementById('q1-subject'),
-      difficulty: document.getElementById('q2-difficulty'),
-      preference: document.getElementById('q3-preference'),
-      time: document.getElementById('q4-time'),
-      learner: document.getElementById('q5-learner')
-  };
 
-  const resultContainer = document.getElementById('result-container');
-  const resultText = document.getElementById('result-text');
-  const restartButton = document.getElementById('restart-button');
+    // --- NEW: Welcome Screen Logic ---
+    const welcomeScreen = document.getElementById('welcome-screen');
+    const mainApp = document.getElementById('main-app');
+    const enterButtons = document.querySelectorAll('.enter-btn');
 
-  const userChoices = {};
-  let currentQuestionKey = 'subject'; // Start with the first question
+    // Function to hide welcome screen and show main app
+    function enterApp() {
+        welcomeScreen.classList.add('hidden');
+        mainApp.classList.remove('hidden');
+    }
 
-  function showQuestion(questionKey) {
-      // Hide all questions
-      Object.values(questions).forEach(q => q.classList.remove('active'));
-      resultContainer.style.display = 'none';
-
-      // Show current question
-      if (questions[questionKey]) {
-          questions[questionKey].classList.add('active');
-          currentQuestionKey = questionKey;
-      }
-  }
-
-  function showResult(method) {
-      Object.values(questions).forEach(q => q.classList.remove('active'));
-      resultText.textContent = method;
-      resultContainer.style.display = 'block';
-  }
-
-  function handleChoice(event) {
-      if (event.target.tagName === 'BUTTON' && event.target.dataset.question) {
-          const question = event.target.dataset.question;
-          const value = event.target.dataset.value;
-
-          // Visual feedback: briefly highlight clicked button
-          event.target.classList.add('clicked');
-          setTimeout(() => event.target.classList.remove('clicked'), 200);
+    // Add a click event listener to each button on the welcome screen
+    enterButtons.forEach(button => {
+        button.addEventListener('click', enterApp);
+    });
+    // --- END of Welcome Screen Logic ---
 
 
-          userChoices[question] = value;
-          decideNextStep();
-      }
-  }
+    // --- Original App Logic (Starts here) ---
 
-  function decideNextStep() {
-      const { subject, difficulty, preference, time, learner } = userChoices;
+    // Get references to all necessary HTML elements
+    const moodButtons = document.querySelectorAll('.mood-btn');
+    const playlistContainer = document.getElementById('playlist-container');
+    const errorMessage = document.getElementById('error-message');
 
-      if (subject === "theoretical") {
-          showResult("Teach each other");
-      } else if (subject === "analytical") {
-          if (!difficulty) {
-              showQuestion('difficulty');
-          } else if (difficulty === "easy") {
-              showResult("Read and summarize");
-          } else if (difficulty === "hard") {
-              if (!preference) {
-                  showQuestion('preference');
-              } else if (preference === "group") {
-                  showResult("Teach each other");
-              } else if (preference === "solo") {
-                  if (!time) {
-                      showQuestion('time');
-                  } else if (time === "yes") { // "yes" means > 2 hours
-                      showResult("Practice Quiz");
-                  } else { // "no" means <= 2 hours
-                      if (!learner) {
-                          showQuestion('learner');
-                      } else if (learner === "yes") { // is_visual_learner == TRUE
-                          showResult("Use mind mapping");
-                      } else { // is_visual_learner == FALSE
-                          showResult("Review Notes");
-                      }
-                  }
-              }
-          }
-      }
-  }
+    // The following object maps moods to their Spotify embed codes.
+    const playlistEmbeds = {
+        happy: '<iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1EIgG2NEOhqsD7?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
+        sad: '<iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DWSqBruwoIXkA?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
+        love: '<iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DWTbzY5gOVvKd?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
+        stress: '<iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DWXe9gFZP0gtP?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
+        hype: '<iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DX4eRPd9frC1m?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>'
+    };
 
-  // Add event listeners to all question containers using event delegation
-  Object.values(questions).forEach(container => {
-      container.addEventListener('click', handleChoice);
-  });
+    // Add click listeners to mood buttons
+    moodButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const selectedMood = button.dataset.mood;
 
-  restartButton.addEventListener('click', () => {
-      // Clear choices
-      for (let key in userChoices) {
-          delete userChoices[key];
-      }
-      // Reset to the first question
-      showQuestion('subject');
-  });
+            // Provide visual feedback by updating button styles
+            updateActiveButton(button);
 
-  // Initialize: Show the first question
-  showQuestion('subject');
+            // Hide any previous error messages
+            errorMessage.classList.add('hidden');
+
+            // Show matching Spotify embed
+            if (playlistEmbeds[selectedMood]) {
+                playlistContainer.innerHTML = playlistEmbeds[selectedMood];
+            } else {
+                playlistContainer.innerHTML = ''; // Clear the playlist area
+                errorMessage.classList.remove('hidden'); // Show the error
+            }
+        });
+    });
+
+    /**
+     * Handles the visual feedback for the active mood button.
+     */
+    function updateActiveButton(activeButton) {
+        moodButtons.forEach(btn => {
+            btn.classList.remove('active');
+        });
+        activeButton.classList.add('active');
+    }
 });
-
-// Add a subtle class for clicked state if not covered by :active
-// This is optional if :active CSS is sufficient for you
-const style = document.createElement('style');
-style.innerHTML = `
-button.clicked {
-  background-color: #004085 !important; /* Darker shade for feedback */
-  transform: scale(0.98);
-}
-`;
-document.head.appendChild(style);
